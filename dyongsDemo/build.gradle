@@ -37,6 +37,12 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // 암호화
+    implementation 'org.springframework.security:spring-security-crypto:6.4.2'
+    // Swagger = springdoc-openapi(스웨거 UI)
+//    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

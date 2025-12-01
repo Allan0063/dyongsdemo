@@ -1,5 +1,6 @@
 package com.dyongs.demo.domain.user.entity;
 
+import com.dyongs.demo.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,16 +9,14 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class User {
+public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String password;
 
     private String name;
     private String email;
-
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
     /*
     // number(10,2) 자료형의 경우
     @Column(precision = 10, scale = 2)
@@ -33,4 +32,9 @@ public class User {
     // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     // private LocalDateTime createdAt;
     */
+
+    public void update(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 }
