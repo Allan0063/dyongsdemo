@@ -18,17 +18,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    // Create
-    public UserResponse createUser(UserRequest request) {
-        User user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .build();
-
-        User saved = userRepository.save(user);
-        return new UserResponse(saved);
-    }
-
     // Read (단건 조회)
     public UserResponse getUser(Long id) {
         User user = userRepository.findById(id)
@@ -43,6 +32,17 @@ public class UserService {
                 .stream()
                 .map(UserResponse::new)
                 .toList();
+    }
+
+    // Create
+    public UserResponse createUser(UserRequest request) {
+        User user = User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .build();
+
+        User saved = userRepository.save(user);
+        return new UserResponse(saved);
     }
 
     // Update

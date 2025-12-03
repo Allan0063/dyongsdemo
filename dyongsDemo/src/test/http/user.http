@@ -1,8 +1,6 @@
-POST http://localhost:8080/auth/signup
+POST http://localhost:8080/category
 Content-Type: application/json
 
 {
-  "name": "Dyong",
-  "email": "dyong@example.com",
-  "password": "password1234"
+  "name": "전자제품"
 }

@@ -16,12 +16,6 @@ public class UserController {
 
     private final UserService userService;
 
-    // Create
-    @PostMapping
-    public UserResponse create(@Valid @RequestBody UserRequest request) {
-        return userService.createUser(request);
-    }
-
     // Read
     @GetMapping("/{id}")
     public UserResponse getOne(@PathVariable Long id) {
@@ -32,6 +26,12 @@ public class UserController {
     @GetMapping
     public List<UserResponse> getAll() {
         return userService.getUsers();
+    }
+
+    // Create
+    @PostMapping
+    public UserResponse create(@Valid @RequestBody UserRequest request) {
+        return userService.createUser(request);
     }
 
     // Update

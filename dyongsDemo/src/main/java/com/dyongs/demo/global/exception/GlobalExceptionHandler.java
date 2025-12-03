@@ -1,5 +1,6 @@
 package com.dyongs.demo.global.exception;
 
+import com.dyongs.demo.domain.product.exception.ProductAccessDeniedException;
 import com.dyongs.demo.domain.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +67,16 @@ public class GlobalExceptionHandler {
                 .message(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response); // 401
+    }
+
+    @ExceptionHandler(ProductAccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleProductAccessDenied(ProductAccessDeniedException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .code("FORBIDDEN")
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response); // 403
     }
 
     // 기타 Service, Repository 등에서 RuntimeException 발생 시

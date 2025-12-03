@@ -1,6 +1,7 @@
 package com.dyongs.demo.domain.user.controller;
 
 import com.dyongs.demo.domain.user.dto.LoginRequest;
+import com.dyongs.demo.domain.user.dto.LoginResponse;
 import com.dyongs.demo.domain.user.dto.SignUpRequest;
 import com.dyongs.demo.domain.user.dto.UserResponse;
 import com.dyongs.demo.domain.user.service.AuthService;
@@ -26,7 +27,7 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/login")
-    public UserResponse login(@Valid @RequestBody LoginRequest request) {
+    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
 }
