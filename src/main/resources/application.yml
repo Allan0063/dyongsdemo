@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/demo
+    username: dyong
+    password: alsk0061
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # 개발 단계: 엔티티 보고 테이블 자동 생성/수정
+                         # 보통 실무에서는:
+                         #  개발 초기: create
+                         #  개발 중기: update
+                         #  운영 배포: none
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true   # 콘솔에 SQL 찍히게
+
+    open-in-view: false  # 추후 N+1 문제 방지용 (요즘 추천 설정) (TODO: 나중에 제대로 알아보기)
+
+logging:
+  level:
+    root: INFO
+    com.dyongs.demo: DEBUG
+
+server:
+  port: 8080
+
+# 중지
+#docker stop mariadb-local
+# 다시 시작
+#docker start mariadb-local
+# 완전히 삭제 (데이터는 C:\Projects\docker\mariadb\data 에 남음)
+#docker rm -f mariadb-local
