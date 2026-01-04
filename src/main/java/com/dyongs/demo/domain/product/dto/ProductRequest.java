@@ -22,6 +22,7 @@ public class ProductRequest {
     @Min(value = 0, message = "재고는 0 이상이어야 합니다.")
     private int stock;
 
+    @NotNull(message = "categoryId는 필수입니다.")
     private Long categoryId;
 
 }

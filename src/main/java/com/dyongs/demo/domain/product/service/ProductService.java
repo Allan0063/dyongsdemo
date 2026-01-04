@@ -31,6 +31,7 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
 
     // Read - 단일
+    @Transactional(readOnly = true)
     public ProductResponse getProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product Not Found"));
@@ -38,7 +39,8 @@ public class ProductService {
     }
 
     // 페이징
-    public Page<ProductResponse> getProducts(String keyword, int page, int size, String sort) {
+    @Transactional(readOnly = true)
+    public Page<ProductResponse> getProducts(String keyword, Long categoryId, int page, int size, String sort) {
 
         // sort 파라미터 파싱 (예: "id,desc" or "price,asc")
         String[] sortParams = sort.split(",");
@@ -53,12 +55,17 @@ public class ProductService {
 
         Page<Product> productPage;
 
-        if (keyword == null || keyword.isBlank()) {
-            // 검색어 없으면 전체 조회
+        boolean hasKeyword = (keyword != null && !keyword.isBlank());
+        boolean hasCategory = (categoryId != null);
+
+        if (!hasKeyword && !hasCategory) {
             productPage = productRepository.findAll(pageable);
-        } else {
-            // 검색어 있으면 이름 기준 검색
+        } else if (hasKeyword && !hasCategory) {
             productPage = productRepository.findByNameContainingIgnoreCase(keyword, pageable);
+        } else if (!hasKeyword && hasCategory) {
+            productPage = productRepository.findByCategory_Id(categoryId, pageable);
+        } else {
+            productPage = productRepository.findByCategory_IdAndNameContainingIgnoreCase(categoryId, keyword, pageable);
         }
 
         return productPage.map(ProductResponse::new);
@@ -123,7 +130,8 @@ public class ProductService {
                 request.getName(),
                 request.getDescription(),
                 request.getPrice(),
-                request.getStock()
+                request.getStock(),
+                category
         );
 
         return new ProductResponse(product);

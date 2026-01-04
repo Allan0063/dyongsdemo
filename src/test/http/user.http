@@ -1,12 +1,1 @@
-POST http://localhost:8080/product
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4IiwiaWF0IjoxNzY0NzUyMDUzLCJleHAiOjE3NjQ3NTM4NTMsImVtYWlsIjoidXNlckFAZXhhbXBsZS5jb20iLCJuYW1lIjoiVXNlckEifQ.Vq-9PHtEiAWiUlFchXDWJKduHN2HscEkdDxdNkirRQM57yjCaD3VlVqzo6pvJSGeZ1wSykdUm3NOMZ8H5O6VdJ6r5Df8lbLmDBFoKHjpJ1Buhr4Fzwzj7NIL_s9H5L0jUdDWZth3H6RMPi6EyKd0xCubM2myb1ipNO_5i50J1KC8f7fft9IjBOpH9d6uUfWnCQaDJq09KT6xwozSfymkEghKQIOQgvRJYzW5TX32vPph0rF0CRmhRy5Dm7VJNgy2SYgfaEZb3OA0ufTMVDD5cV-JEXBbPmVpjDEKpeTVYgMB7_I0EfaHrligelZgdN9XAOyuIyDuq_Kd0ZZTaJNeYQ
-
-{
-  "name": "게이밍 모니터",
-  "description": "QHD 240Hz",
-  "price": 450000,
-  "stock": 3,
-  "categoryId": 1
-}
-
+GET http://localhost:8080/product?categoryId=1&keyword=모니터&page=0&size=10&sort=id,desc

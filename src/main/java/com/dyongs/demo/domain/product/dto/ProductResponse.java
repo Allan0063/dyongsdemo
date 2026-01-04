@@ -14,6 +14,8 @@ public class ProductResponse {
     private String description;
     private BigDecimal price;
     private int stock;
+    private Long categoryId;
+    private String categoryName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -23,6 +25,10 @@ public class ProductResponse {
         this.description = product.getDescription();
         this.price = product.getPrice();
         this.stock = product.getStock();
+
+        this.categoryId = product.getCategory() != null ? product.getCategory().getId() : null;
+        this.categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
+
         this.createdAt = product.getCreatedAt();
         this.updatedAt = product.getUpdatedAt();
     }

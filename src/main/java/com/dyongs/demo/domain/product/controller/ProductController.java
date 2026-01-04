@@ -28,12 +28,13 @@ public class ProductController {
     // 목록 + 검색 + 페이징 + 정렬
     @GetMapping
     public Page<ProductResponse> getProducts(
-            @RequestParam(required = false) String keyword,     // 검색어 (옵션)
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Long categoryId,     // 검색어 (옵션)
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id,desc") String sort
     ) {
-        return productService.getProducts(keyword, page, size, sort);
+        return productService.getProducts(keyword, categoryId, page, size, sort);
     }
 
     // 검색

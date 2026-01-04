@@ -37,10 +37,11 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public void update(String name, String description, BigDecimal price, int stock) {
+    public void update(String name, String description, BigDecimal price, int stock, Category category) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
+        this.category = category;
     }
 }
