@@ -1,10 +1,13 @@
 package com.dyongs.demo.domain.category.controller;
 
+import com.dyongs.demo.domain.category.dto.CategoryListResponse;
 import com.dyongs.demo.domain.category.dto.CategoryRequest;
 import com.dyongs.demo.domain.category.dto.CategoryResponse;
 import com.dyongs.demo.domain.category.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,5 +27,13 @@ public class CategoryController {
     @GetMapping
     public List<CategoryResponse> getCategories() {
         return categoryService.getCategories();
+    }
+
+    @GetMapping("/page")
+    public Page<CategoryListResponse> getCategoryList(
+            @RequestParam(required = false) String keyword,
+            Pageable pageable
+    ) {
+        return categoryService.getCategoryList(keyword, pageable);
     }
 }

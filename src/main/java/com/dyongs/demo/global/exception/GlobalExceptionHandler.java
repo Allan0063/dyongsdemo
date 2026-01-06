@@ -1,5 +1,6 @@
 package com.dyongs.demo.global.exception;
 
+import com.dyongs.demo.domain.category.exception.InvalidSortException;
 import com.dyongs.demo.domain.product.exception.ProductAccessDeniedException;
 import com.dyongs.demo.domain.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -77,6 +78,16 @@ public class GlobalExceptionHandler {
                 .message(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response); // 403
+    }
+
+    @ExceptionHandler(InvalidSortException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidSortException(InvalidSortException e) {
+        ErrorResponse response = ErrorResponse.builder()
+                .success(false)
+                .code("INVALID_SORT")
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response); // 403
     }
 
     // 기타 Service, Repository 등에서 RuntimeException 발생 시
