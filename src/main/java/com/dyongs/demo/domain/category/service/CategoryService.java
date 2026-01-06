@@ -1,5 +1,6 @@
 package com.dyongs.demo.domain.category.service;
 
+import com.dyongs.demo.domain.category.CategorySortField;
 import com.dyongs.demo.domain.category.dto.CategoryListResponse;
 import com.dyongs.demo.domain.category.dto.CategoryRequest;
 import com.dyongs.demo.domain.category.dto.CategoryResponse;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +24,8 @@ import java.util.Set;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final int MAX_PAGE_SIZE = 50;
 
     @Transactional
     public CategoryResponse createCategory(CategoryRequest request) {
@@ -54,8 +58,8 @@ public class CategoryService {
     // 목록(OneToMany, ManyToMany)
     @Transactional(readOnly = true)
     public Page<CategoryListResponse> getCategoryList(String keyword, Pageable pageable) {
-        Pageable safePageable = validateSort(pageable);
-        return categoryRepository.searchCategoryList(keyword, safePageable);
+        Pageable safe = validateAndNormalizePageable(pageable);
+        return categoryRepository.searchCategoryList(keyword, safe);
     }
 
     private Pageable validateSort(Pageable pageable) {
@@ -74,5 +78,48 @@ public class CategoryService {
             }
         }
         return pageable;
+    }
+
+    private Pageable validateAndNormalizePageable(Pageable pageable) {
+        // ✅ page/size 방어 (선택인데 실무에선 거의 함)
+        int page = Math.max(pageable.getPageNumber(), 0);
+
+        int size = pageable.getPageSize();
+        if (size <= 0) size = DEFAULT_PAGE_SIZE;
+        if (size > MAX_PAGE_SIZE) size = MAX_PAGE_SIZE;
+
+        Sort normalizedSort = normalizeSort(pageable.getSort());
+        return PageRequest.of(page, size, normalizedSort);
+    }
+
+    private Sort normalizeSort(Sort sort) {
+        // ✅ 정렬이 없으면 기본 정렬 정책
+        if (sort == null || sort.isUnsorted()) {
+            return Sort.by(Sort.Order.desc("id"));
+        }
+
+        List<Sort.Order> orders = new ArrayList<>();
+
+        for (Sort.Order order : sort) {
+            String requestedKey = order.getProperty(); // 사용자가 준 sort 키
+            CategorySortField field = CategorySortField.fromKey(requestedKey);
+
+            if (field == null) {
+                throw new InvalidSortException("허용되지 않은 정렬 필드: " + requestedKey);
+            }
+
+            // ✅ 요청 키 → 실제 엔티티 필드명으로 매핑
+            Sort.Direction direction = order.getDirection(); // Spring이 asc/desc 파싱
+            Sort.Order mapped = new Sort.Order(direction, field.getProperty());
+
+            // (선택) 대소문자 무시 정렬 같은 옵션
+            if (order.isIgnoreCase()) {
+                mapped = mapped.ignoreCase();
+            }
+
+            orders.add(mapped);
+        }
+
+        return Sort.by(orders);
     }
 }

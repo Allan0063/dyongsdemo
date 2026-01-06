@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
                 .code("INVALID_SORT")
                 .message(e.getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response); // 403
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response); // 400
     }
 
     // 기타 Service, Repository 등에서 RuntimeException 발생 시
